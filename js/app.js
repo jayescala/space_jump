@@ -4,8 +4,76 @@ const canvas = document.getElementById("canvas");
 
 const ctx = canvas.getContext("2d");
 
-// var coinImage = new Image();
-// coinImage.src = "images/coin-sprite-animation.png";
+let teleporterImage = new Image();
+teleporterImage.src = "img/teleporter_sprite.png";
+
+teleporterImage.onload = function (posX, posY, width, height) {
+	ctx.drawImage(teleporterImage, 4, 4, 30, 63, posX, posY, width, height);
+}
+
+let platformImage = new Image();
+platformImage.src = "img/platform_sprite.png";
+
+platformImage.onload = function (posX, posY, width, height) {
+	ctx.drawImage(platformImage, 4, 16, 46, 5, posX, posY, width, height);
+}
+
+let robotImage = new Image();
+robotImage.src = "img/robot_player_sprite.png";
+
+robotImage.onload = function (posX, posY, width, height) {
+	ctx.drawImage(robotImage, 35, 0, 20, 30, posX, posY, width, height);
+}
+
+let robotReversedImage = new Image();
+robotReversedImage.src = "img/robot_player_sprite_reversed.png";
+
+robotReversedImage.onload = function (posX, posY, width, height) {
+	ctx.drawImage(robotReversedImage, 35, 0, 20, 30, posX, posY, width, height);
+}
+
+let ghostImage = new Image();
+ghostImage.src = "img/ghost_enemy_sprite.png";
+
+ghostImage.onload = function (posX, posY, width, height) {
+	ctx.drawImage(ghostImage, 100, 0, 90, 90, posX, posY, width, height);
+}
+
+let ghostReversedImage = new Image();
+ghostReversedImage.src = "img/ghost_enemy_sprite_reversed.png";
+
+ghostReversedImage.onload = function (posX, posY, width, height) {
+	ctx.drawImage(ghostReversedImage, 0, 0, 90, 90, posX, posY, width, height);
+}
+
+let droidImage = new Image();
+droidImage.src = "img/droid_enemy_sprite.png";
+
+droidImage.onload = function (posX, posY, width, height) {
+	ctx.drawImage(droidImage, 260, 100, 28, 28, posX, posY, width, height);
+}
+
+let laserImage = new Image();
+laserImage.src = "img/laser_sprite.png";
+
+laserImage.onload = function (posX, posY, width, height) {
+	ctx.drawImage(laserImage, 20, 20, 500, 100, posX, posY, width, height);
+}
+
+let motherJellyfishImage = new Image();
+motherJellyfishImage.src = "img/giant_jellyfish_enemy_sprite.png";
+
+motherJellyfishImage.onload = function (posX, posY, width, height) {
+	ctx.drawImage(motherJellyfishImage, 160, 30, 140, 140, posX, posY, width, height);
+}
+
+let droneJellyfishImage = new Image();
+droneJellyfishImage.src = "img/eye_jellyfish_enemy_sprite.png";
+
+droneJellyfishImage.onload = function (posX, posY, width, height) {
+	ctx.drawImage(droneJellyfishImage, 100, 25, 75, 75, posX, posY, width, height);
+}
+
 
 
 // Player Class
@@ -85,8 +153,12 @@ class Player {
 	}
 	draw(){
 		this.move();
-		ctx.rect(this.posX, this.posY, this.width, this.height);
-		ctx.stroke();
+		if(this.velX >= 0){
+			robotImage.onload(this.posX, this.posY, this.width, this.height);
+		}
+		if(this.velX < 0){
+			robotReversedImage.onload(this.posX, this.posY, this.width, this.height);
+		}
 	}
 }
 
@@ -107,8 +179,7 @@ class Platform {
 
 	}
 	draw(){
-		ctx.rect(this.posX, this.posY, this.width, this.height);
-		ctx.stroke();
+		platformImage.onload(this.posX, this.posY, this.width, this.height);
 	}
 	detectCollision(){
 		if(this.detectOnTop() === true){
@@ -224,6 +295,7 @@ class Teleporter {
 		this.posY = topPlatformPosY - this.height;
 	}
 	draw(){
+		teleporterImage.onload(this.posX, this.posY, this.width, this.height);
 		// window.onload = function() {
     		// let img = document.getElementById("teleporter");
     		// ctx.drawImage(img, this.x, this.y, this.width, this.height);
@@ -232,8 +304,9 @@ class Teleporter {
 		// teleporterImage = "../img/teleporter_sprite.png";
 		// ctx.drawImage(teleporterImage, this.height, this.width);
 		// teleporterImage.onload(this.x, this.y, this.width, this.height);
-		ctx.rect(this.posX, this.posY, this.width, this.height);
-		ctx.stroke();
+		
+		// ctx.rect(this.posX, this.posY, this.width, this.height);
+		// ctx.stroke();
 	}
 	detectCollision(){
 		let load = 0;
@@ -332,8 +405,13 @@ class Ghost {
 	}
 	draw(){
 		this.move();
-		ctx.rect(this.posX, this.posY, this.width, this.height);
-		ctx.stroke();
+		if(this.velX > 0){
+			ghostImage.onload(this.posX, this.posY, this.width, this.height);
+		}
+		if(this.velX < 0){
+			ghostReversedImage.onload(this.posX, this.posY, this.width, this.height);
+		}
+		
 	}
 	detectCollision(){
 		if(this.detectOnTop() === true){
@@ -433,8 +511,7 @@ class Droid {
 		this.posX += this.velX;
 	}
 	draw(){
-		ctx.rect(this.posX, this.posY, this.width, this.height);
-		ctx.stroke();
+		droidImage.onload(this.posX, this.posY, this.width, this.height);
 	}
 	detectCollision(){
 		if(this.detectOnTop() === true){
@@ -534,8 +611,7 @@ class Laser {
 		this.posX += this.velX;
 	}
 	draw(){
-		ctx.rect(this.posX, this.posY, this.width, this.height);
-		ctx.stroke();
+		laserImage.onload(this.posX, this.posY, this.width, this.height);
 	}
 	detectCollision(){
 		// if(this.detectOnRight() === true){
@@ -609,8 +685,7 @@ class MotherJellyfish {
 		this.posX += this.velX;
 	}
 	draw(){
-		ctx.rect(this.posX, this.posY, this.width, this.height);
-		ctx.stroke();
+		motherJellyfishImage.onload(this.posX, this.posY, this.width, this.height);
 	}
 	detectCollision(){
 		if(this.detectOnTop() === true){
@@ -723,8 +798,7 @@ class DroneJellyfish {
 		this.posY += this.velY;
 	}
 	draw(){
-		ctx.rect(this.posX, this.posY, this.width, this.height);
-		ctx.stroke();
+		droneJellyfishImage.onload(this.posX, this.posY, this.width, this.height);
 	}
 	detectCollision(){
 		if(this.detectOnTop() === true){
@@ -916,10 +990,10 @@ levels[1] = {
 	},
 	ghostRender(){
 		if(ghosts.length === 0){
-			ghosts.push(new Ghost(60, 60, 0, canvas.height * (10/12) - 70, -3, 0));
-			ghosts.push(new Ghost(60, 60, canvas.width - 60, canvas.height * (8/12) - 70, 3, 0));
-			ghosts.push(new Ghost(60, 60, 0, canvas.height * (6/12) - 70, -3, 0));
-			ghosts.push(new Ghost(60, 60, canvas.width - 60, canvas.height * (4/12) -70, 3, 0));
+			ghosts.push(new Ghost(70, 70, 0, canvas.height * (10/12) - 70, -3, 0));
+			ghosts.push(new Ghost(70, 70, canvas.width - 70, canvas.height * (8/12) - 70, 3, 0));
+			ghosts.push(new Ghost(70, 70, 0, canvas.height * (6/12) - 70, -3, 0));
+			ghosts.push(new Ghost(70, 70, canvas.width - 70, canvas.height * (4/12) -70, 3, 0));
 		}
 		for(let i = ghosts.length-1; i >= 0; i--){
 			ghosts[i].detectCollision();
@@ -994,8 +1068,8 @@ levels[2] = {
 			// }
 		}
 		if(fps % 200 == 0){
-			lasers.push(new Laser(5, 50, canvas.width - 100, canvas.height * (8/12) - 40, -20, 0));
-			lasers.push(new Laser(5, 50, canvas.width - 100, canvas.height * (4/12) - 40, -20, 0));
+			lasers.push(new Laser(5, 50, canvas.width - 70, canvas.height * (8/12) - 40, -20, 0));
+			lasers.push(new Laser(5, 50, canvas.width - 70, canvas.height * (4/12) - 40, -20, 0));
 		}
 		for(let i = lasers.length-1; i >= 0; i--){
 			lasers[i].detectCollision();
@@ -1056,7 +1130,7 @@ levels[3] = {
 	},
 	motherJellyfishRender(){
 		if(motherJellyfishes.length === 0){
-			motherJellyfishes.push(new MotherJellyfish(100, 100, (canvas.width * (1/2)) - 50, canvas.height * (6/12), 0, 0));
+			motherJellyfishes.push(new MotherJellyfish(150, 150, (canvas.width * (1/2)) - 75, canvas.height * (6/12), 0, 0));
 		}
 		for(let i = motherJellyfishes.length-1; i >= 0; i--){
 			motherJellyfishes[i].detectCollision();
@@ -1109,12 +1183,12 @@ const playerRender = () => {
 
 const gameRender = () => {
 	canvas.width = canvas.width;
-	playerRender();
 	levels[level].platformRender();
 	levels[level].teleporterRender();
 	levels[level].ghostRender();
 	levels[level].droidRender();
 	levels[level].motherJellyfishRender();
+	playerRender();
 	fps = window.requestAnimationFrame(() => {
 		gameRender();
 	});
