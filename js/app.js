@@ -4,6 +4,10 @@ const canvas = document.getElementById("canvas");
 
 const ctx = canvas.getContext("2d");
 
+// var coinImage = new Image();
+// coinImage.src = "images/coin-sprite-animation.png";
+
+
 // Player Class
 class Player {
 	constructor(){
@@ -220,6 +224,14 @@ class Teleporter {
 		this.posY = topPlatformPosY - this.height;
 	}
 	draw(){
+		// window.onload = function() {
+    		// let img = document.getElementById("teleporter");
+    		// ctx.drawImage(img, this.x, this.y, this.width, this.height);
+    	// };
+		// let teleporterImage = new Image();
+		// teleporterImage = "../img/teleporter_sprite.png";
+		// ctx.drawImage(teleporterImage, this.height, this.width);
+		// teleporterImage.onload(this.x, this.y, this.width, this.height);
 		ctx.rect(this.posX, this.posY, this.width, this.height);
 		ctx.stroke();
 	}
