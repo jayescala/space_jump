@@ -36,14 +36,14 @@ let ghostImage = new Image();
 ghostImage.src = "img/ghost_enemy_sprite.png";
 
 ghostImage.onload = function (posX, posY, width, height) {
-	ctx.drawImage(ghostImage, 100, 0, 90, 90, posX, posY, width, height);
+	ctx.drawImage(ghostImage, 98, 10, 90, 88, posX, posY, width, height);
 }
 
 let ghostReversedImage = new Image();
 ghostReversedImage.src = "img/ghost_enemy_sprite_reversed.png";
 
 ghostReversedImage.onload = function (posX, posY, width, height) {
-	ctx.drawImage(ghostReversedImage, 0, 0, 90, 90, posX, posY, width, height);
+	ctx.drawImage(ghostReversedImage, 8, 10, 90, 88, posX, posY, width, height);
 }
 
 let droidImage = new Image();
@@ -990,10 +990,10 @@ levels[1] = {
 	},
 	ghostRender(){
 		if(ghosts.length === 0){
-			ghosts.push(new Ghost(70, 70, 0, canvas.height * (10/12) - 70, -3, 0));
-			ghosts.push(new Ghost(70, 70, canvas.width - 70, canvas.height * (8/12) - 70, 3, 0));
-			ghosts.push(new Ghost(70, 70, 0, canvas.height * (6/12) - 70, -3, 0));
-			ghosts.push(new Ghost(70, 70, canvas.width - 70, canvas.height * (4/12) -70, 3, 0));
+			ghosts.push(new Ghost(70, 70, 0, canvas.height * (10/12) - 70, -2, 0));
+			ghosts.push(new Ghost(70, 70, canvas.width - 70, canvas.height * (8/12) - 70, 2, 0));
+			ghosts.push(new Ghost(70, 70, 0, canvas.height * (6/12) - 70, -2, 0));
+			ghosts.push(new Ghost(70, 70, canvas.width - 70, canvas.height * (4/12) -70, 2, 0));
 		}
 		for(let i = ghosts.length-1; i >= 0; i--){
 			ghosts[i].detectCollision();
@@ -1184,10 +1184,10 @@ const playerRender = () => {
 const gameRender = () => {
 	canvas.width = canvas.width;
 	levels[level].platformRender();
-	levels[level].teleporterRender();
 	levels[level].ghostRender();
 	levels[level].droidRender();
 	levels[level].motherJellyfishRender();
+	levels[level].teleporterRender();
 	playerRender();
 	fps = window.requestAnimationFrame(() => {
 		gameRender();
