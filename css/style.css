@@ -12,7 +12,7 @@ body {
 #title {
 	display: flex;
 	height: 60px;
-	width: 200px;
+	width: 300px;
 	justify-content: center;
 	align-content: center;
 	align-self: center;
@@ -22,7 +22,7 @@ body {
 	line-height: 30px;
 	padding: 2px;
 	margin: 2px;
-	letter-spacing: 8px;
+	letter-spacing: 10px;
 }
 
 #container {
