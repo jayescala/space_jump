@@ -36,14 +36,14 @@ let ghostImage = new Image();
 ghostImage.src = "img/ghost_enemy_sprite.png";
 
 ghostImage.onload = function (posX, posY, width, height) {
-	ctx.drawImage(ghostImage, 98, 10, 90, 88, posX, posY, width, height);
+	ctx.drawImage(ghostImage, 98, 10, 90, 86, posX, posY, width, height);
 }
 
 let ghostReversedImage = new Image();
 ghostReversedImage.src = "img/ghost_enemy_sprite_reversed.png";
 
 ghostReversedImage.onload = function (posX, posY, width, height) {
-	ctx.drawImage(ghostReversedImage, 8, 10, 90, 88, posX, posY, width, height);
+	ctx.drawImage(ghostReversedImage, 8, 10, 90, 86, posX, posY, width, height);
 }
 
 let droidImage = new Image();
@@ -100,6 +100,7 @@ class Player {
 		if(upKeyDown === true){
 			if(this.onGround === true){
 				this.velY += -this.jumpY;
+				this.dragX = 1;
 				this.onGround = false;
 			}
 		}
@@ -130,9 +131,9 @@ class Player {
 		} else if(this.velX < 0){
 			this.velX += this.dragX;
 		}
-	
+
 		this.posX += this.velX;
-	
+
 		if(this.posX > canvas.width - this.width){
 			this.posX = canvas.width - this.width;
 			this.velX = 0;
@@ -141,10 +142,10 @@ class Player {
 			this.posX = 0;
 			this.velX = 0;
 		}
-	
+
 		this.velY += this.gravY;
 		this.posY += this.velY;
-	
+
 		if(this.posY > canvas.height - this.height){
 			this.posY = canvas.height - this.height;
 			this.velY = 0;
@@ -188,6 +189,10 @@ class Platform {
 				player.posY = this.posY - player.height - player.gravY;
 				player.velY += this.velY;
 				player.onGround = true;
+				if(rightKeyDown === false && leftKeyDown === false && player.onGround === true && this.velX != 0){
+					player.dragX = 0;
+					player.velX = this.velX;
+				}
 			}
 		}
 		// if(this.detectOnRight() === true){
@@ -304,7 +309,7 @@ class Teleporter {
 		// teleporterImage = "../img/teleporter_sprite.png";
 		// ctx.drawImage(teleporterImage, this.height, this.width);
 		// teleporterImage.onload(this.x, this.y, this.width, this.height);
-		
+
 		// ctx.rect(this.posX, this.posY, this.width, this.height);
 		// ctx.stroke();
 	}
@@ -411,7 +416,7 @@ class Ghost {
 		if(this.velX < 0){
 			ghostReversedImage.onload(this.posX, this.posY, this.width, this.height);
 		}
-		
+
 	}
 	detectCollision(){
 		if(this.detectOnTop() === true){
@@ -782,9 +787,9 @@ class DroneJellyfish {
 	// }
 	// Droid Rendering
 	update(){
-	
+
 		this.posX += this.velX;
-	
+
 		if(this.posX > canvas.width - this.width){
 			this.posX = canvas.width - this.width;
 			this.velX = 0;
@@ -793,7 +798,7 @@ class DroneJellyfish {
 			this.posX = 0;
 			this.velX = 0;
 		}
-	
+
 		this.velY += this.gravY;
 		this.posY += this.velY;
 	}
@@ -973,7 +978,7 @@ levels[1] = {
 				platforms.splice(i, 1);
 			}
 		}
-		
+
 	},
 	teleporterRender(){
 		if(teleporters.length === 0){
@@ -1008,7 +1013,7 @@ levels[1] = {
 
 	},
 	motherJellyfishRender(){
-		
+
 	}
 }
 
@@ -1036,7 +1041,7 @@ levels[2] = {
 				platforms.splice(i, 1);
 			}
 		}
-		
+
 	},
 	teleporterRender(){
 		if(teleporters.length === 0){
@@ -1055,6 +1060,18 @@ levels[2] = {
 
 	},
 	droidRender(){
+		if(fps % 200 == 0){
+			lasers.push(new Laser(5, 50, canvas.width - 70, canvas.height * (8/12) - 30, -20, 0));
+			lasers.push(new Laser(5, 50, canvas.width - 70, canvas.height * (4/12) - 30, -20, 0));
+		}
+		for(let i = lasers.length-1; i >= 0; i--){
+			lasers[i].detectCollision();
+			lasers[i].update();
+			lasers[i].draw();
+			if(lasers[i].posX + lasers[i].width === 0 || lasers[i].posX === canvas.width || lasers[i].posY + lasers[i].height === 0 || lasers[i].posY === canvas.height){
+				lasers.splice(i, 1);
+			}
+		}
 		if(droids.length === 0){
 			droids.push(new Droid(50, 50, canvas.width - 50, canvas.height * (8/12) - 50, 0, 0));
 			droids.push(new Droid(50, 50, canvas.width - 50, canvas.height * (4/12) - 50, 0, 0));
@@ -1067,21 +1084,9 @@ levels[2] = {
 				// droids.splice(i, 1);
 			// }
 		}
-		if(fps % 200 == 0){
-			lasers.push(new Laser(5, 50, canvas.width - 70, canvas.height * (8/12) - 40, -20, 0));
-			lasers.push(new Laser(5, 50, canvas.width - 70, canvas.height * (4/12) - 40, -20, 0));
-		}
-		for(let i = lasers.length-1; i >= 0; i--){
-			lasers[i].detectCollision();
-			lasers[i].update();
-			lasers[i].draw();
-			if(lasers[i].posX + lasers[i].width === 0 || lasers[i].posX === canvas.width || lasers[i].posY + lasers[i].height === 0 || lasers[i].posY === canvas.height){
-				lasers.splice(i, 1);
-			}
-		}
 	},
 	motherJellyfishRender(){
-		
+
 	}
 }
 
@@ -1107,7 +1112,7 @@ levels[3] = {
 				platforms.splice(i, 1);
 			}
 		}
-		
+
 	},
 	teleporterRender(){
 		if(teleporters.length === 0){
